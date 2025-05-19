@@ -1,0 +1,27 @@
+services:
+  product-service:
+    build: 
+      context: ./product_service
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+    networks:
+      - sportshop-net
+
+  order-service:
+    build:
+      context: ./order_service
+    ports:
+      - "8001:8001"
+    environment:
+      - PORT=8001
+      - PRODUCT_SERVICE_URL=http://product-service:8000
+    depends_on:
+      - product-service
+    networks:
+      - sportshop-net
+
+networks:
+  sportshop-net:
+    name: sportshop-network
